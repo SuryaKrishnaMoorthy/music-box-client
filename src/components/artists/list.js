@@ -1,6 +1,13 @@
 import React from 'react'
+import { removeArtist } from '../../actions/artist'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-const ArtistList = ({ artists }) => {
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  removeArtist
+}, dispatch)
+
+const ArtistList = ({ artists, removeArtist }) => {
   const lis = artists.map((artist, i) => {
     return <li
       className="list-group-item d-flex justify-content-between align-items-center"
@@ -8,7 +15,7 @@ const ArtistList = ({ artists }) => {
         { artist.name }
         <section>
           <span className="badge badge-primary badge-pill">{ artist.genre }</span>
-          <a className="badge badge-danger badge-pill text-white ml-2">Remove</a>
+          <a onClick={() => removeArtist(artist.id) } className="badge badge-danger badge-pill text-white ml-2">Remove</a>
         </section>
       </li>
   })
@@ -16,4 +23,4 @@ const ArtistList = ({ artists }) => {
   return <ul className="list-group">{ lis }</ul>
 }
 
-export default ArtistList
+export default connect(null, mapDispatchToProps)(ArtistList)

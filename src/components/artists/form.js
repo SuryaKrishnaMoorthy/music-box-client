@@ -1,4 +1,11 @@
 import React, { Component } from 'react'
+import { createArtist } from '../../actions/artist'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  createArtist
+}, dispatch)
 
 class ArtistForm extends Component {
   constructor (props) {
@@ -10,6 +17,7 @@ class ArtistForm extends Component {
   }
 
   onChange = (event) => {
+    console.log(event.target.value);
     this.setState({
       [event.target.name]: event.target.value
     })
@@ -17,8 +25,9 @@ class ArtistForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    console.log(this.state)
     this.setState({ name: '', genre: '' })
+    // let body = { name: event.target.name.value, genre: event.target.genre.value }
+    this.props.createArtist(this.state)
   }
 
   render () {
@@ -28,7 +37,7 @@ class ArtistForm extends Component {
           <label htmlFor="name">Artist Name</label>
           <input
             onChange={ this.onChange }
-            value={ this.state.name }
+            defaultValue=""
             type="text"
             className="form-control"
             name="name"
@@ -57,4 +66,4 @@ class ArtistForm extends Component {
   }
 }
 
-export default ArtistForm
+export default connect(null, mapDispatchToProps)(ArtistForm)
